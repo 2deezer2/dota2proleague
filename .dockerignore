@@ -7,3 +7,4 @@ logs
 dbt/target
 dbt/logs
 .local
+.ipynb_checkpoints

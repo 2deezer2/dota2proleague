@@ -52,3 +52,30 @@ class WarehouseTests(unittest.TestCase):
         with connect() as conn:
             self.assertEqual(conn.execute("SELECT count(*) FROM raw.match_payloads "
                                           "WHERE match_id=900000000003").fetchone()[0], 1)
+
+    def test_roster_change_resets_roster_summary_and_keeps_players_separate(self):
+        import json
+        import subprocess
+        from pathlib import Path
+        from psycopg.types.json import Jsonb
+        from dota_scout.warehouse import connect, load_demo
+        load_demo()
+        fixture=json.loads((Path(__file__).parent/'fixtures/demo.json').read_text())
+        changed=fixture['matches'][0]
+        changed['match_id']=900000000004
+        changed['start_time']=fixture['matches'][1]['start_time']+86400
+        changed['players'][0]['account_id']=910099
+        with connect() as conn:
+            conn.execute("INSERT INTO raw.pro_matches(match_id,start_time,payload) VALUES (%s,%s,%s) "
+                         "ON CONFLICT DO NOTHING",(changed['match_id'],changed['start_time'],Jsonb(changed)))
+            conn.execute("INSERT INTO raw.match_payloads(match_id,payload) VALUES (%s,%s) "
+                         "ON CONFLICT DO NOTHING",(changed['match_id'],Jsonb(changed)))
+        subprocess.run([os.getenv('DBT_BIN','dbt'),'build','--project-dir','dbt','--profiles-dir','dbt'],
+                       check=True)
+        with connect() as conn:
+            self.assertEqual(conn.execute("SELECT roster_spell,games FROM analytics.current_rosters "
+                                          "WHERE team_id=990001").fetchone(),(2,1))
+            self.assertEqual(conn.execute("SELECT count(*) FROM analytics.fct_player_matches "
+                                          "WHERE account_id=910001").fetchone()[0],2)
+            self.assertEqual(conn.execute("SELECT count(*) FROM analytics.dim_players "
+                                          "WHERE account_id=910099").fetchone()[0],1)

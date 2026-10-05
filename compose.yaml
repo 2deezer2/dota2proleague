@@ -34,6 +34,8 @@ services:
       MATCH_PAGES: ${MATCH_PAGES:-3}
       MATCH_LIMIT: ${MATCH_LIMIT:-50}
       LEAGUE_IDS: ${LEAGUE_IDS:-}
+      TOURNAMENT_SCOPE: ${TOURNAMENT_SCOPE:-selected}
+      PROFILE_LIMIT: ${PROFILE_LIMIT:-20}
     ports:
       - "127.0.0.1:8080:8080"
     volumes:

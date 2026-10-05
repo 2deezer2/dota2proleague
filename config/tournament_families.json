@@ -1,0 +1,12 @@
+{
+  "source": "User-selected series; not an automatically verified Liquipedia tier classification",
+  "families": [
+    {"name": "BLAST Slam", "pattern": "\\bblast\\s+slam\\b"},
+    {"name": "ESL One", "pattern": "\\besl\\s+one\\b"},
+    {"name": "DreamLeague Season", "pattern": "\\bdream\\s*league\\s+(season\\s*)?\\d+\\b"},
+    {"name": "Esports World Cup", "pattern": "\\b(esports\\s+world\\s+cup|ewc)\\b"},
+    {"name": "PGL Wallachia", "pattern": "\\bpgl\\s+wallachia\\b"},
+    {"name": "The International", "pattern": "\\bthe\\s+international\\b"}
+  ],
+  "exclude_pattern": "qualifi|division\\s*(2|ii)\\b|open\\s+qual|closed\\s+qual"
+}

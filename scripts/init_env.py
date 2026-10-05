@@ -11,4 +11,5 @@ else:
         output.write("OPENDOTA_API_KEY=\n")
         output.write("MATCH_PAGES=3\nMATCH_LIMIT=50\n")
         output.write("LEAGUE_IDS=\n")
+        output.write("TOURNAMENT_SCOPE=selected\nPROFILE_LIMIT=20\n")
     print("Created .env with a random local database password")

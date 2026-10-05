@@ -15,3 +15,6 @@ sources:
         columns:
           - name: hero_id
             tests: [unique, not_null]
+      - name: leagues
+      - name: team_profiles
+      - name: player_profiles

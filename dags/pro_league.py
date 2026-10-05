@@ -28,7 +28,12 @@ def pro_league():
         subprocess.run(["/opt/dbt/bin/dbt", "build", "--project-dir", "/opt/project/dbt",
                         "--profiles-dir", "/opt/project/dbt"], check=True)
 
-    collect() >> build_marts()
+    @task(execution_timeout=timedelta(minutes=15))
+    def profiles():
+        from dota_scout.warehouse import sync_profiles
+        return sync_profiles(limit=int(os.getenv("PROFILE_LIMIT", "20")))
+
+    collect() >> profiles() >> build_marts()
 
 
 pro_league()

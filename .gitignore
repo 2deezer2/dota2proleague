@@ -12,3 +12,4 @@ logs/
 dist/
 build/
 .local/
+.ipynb_checkpoints/
