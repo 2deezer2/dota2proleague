@@ -1,0 +1,35 @@
+version: 2
+models:
+  - name: stg_matches
+    columns:
+      - name: match_id
+        tests: [unique, not_null]
+      - name: radiant_win
+        tests: [not_null]
+      - name: started_at
+        tests: [not_null]
+  - name: stg_draft
+    columns:
+      - name: hero_id
+        tests: [not_null]
+      - name: side
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+  - name: fct_team_matches
+    columns:
+      - name: team_id
+        tests: [not_null]
+      - name: match_id
+        tests:
+          - relationships:
+              to: ref('stg_matches')
+              field: match_id
+  - name: fct_team_draft
+    columns:
+      - name: match_id
+        tests:
+          - relationships:
+              to: ref('stg_matches')
+              field: match_id

@@ -1,0 +1,61 @@
+name: dota2proleague
+services:
+  postgres:
+    image: postgres:16.6
+    environment:
+      POSTGRES_USER: scout
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python scripts/init_env.py first}
+      POSTGRES_DB: dota
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U scout -d dota"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  airflow:
+    build: .
+    command: standalone
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/project/dags
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://scout:${POSTGRES_PASSWORD}@postgres:5432/airflow
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: admin:admin
+      WAREHOUSE_DSN: postgresql://scout:${POSTGRES_PASSWORD}@postgres:5432/dota
+      DBT_HOST: postgres
+      DBT_USER: scout
+      DBT_PASSWORD: ${POSTGRES_PASSWORD}
+      DBT_DATABASE: dota
+      OPENDOTA_API_KEY: ${OPENDOTA_API_KEY:-}
+      MATCH_PAGES: ${MATCH_PAGES:-3}
+      MATCH_LIMIT: ${MATCH_LIMIT:-50}
+      LEAGUE_IDS: ${LEAGUE_IDS:-}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - airflow-home:/opt/airflow
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    environment:
+      WAREHOUSE_DSN: postgresql://scout:${POSTGRES_PASSWORD}@postgres:5432/dota
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  airflow-home:

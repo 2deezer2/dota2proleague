@@ -1,0 +1,12 @@
+name: dota2proleague
+version: '1.0.0'
+config-version: 2
+profile: dota2proleague
+model-paths: [models]
+test-paths: [tests]
+models:
+  dota2proleague:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

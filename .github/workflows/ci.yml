@@ -1,0 +1,41 @@
+name: tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.6
+        env:
+          POSTGRES_USER: scout
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: dota
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U scout -d dota"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      WAREHOUSE_DSN: postgresql://scout:ci_only_password@localhost:5432/dota
+      DBT_HOST: localhost
+      DBT_USER: scout
+      DBT_PASSWORD: ci_only_password
+      DBT_DATABASE: dota
+      RUN_DB_TESTS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e . -r requirements-dbt.txt ruff
+      - run: ruff check src dags dashboard scripts tests
+      - run: python -m unittest discover -s tests -v
+      - name: Validate Compose
+        run: |
+          python scripts/init_env.py
+          docker compose config --quiet
+      - name: Build Airflow image and check DAG imports
+        run: |
+          docker compose build airflow
+          docker compose run --rm --no-deps airflow python -c "from airflow.models.dagbag import DagBag; bag=DagBag('/opt/project/dags', include_examples=False); assert not bag.import_errors, bag.import_errors; assert 'dota2_pro_league' in bag.dags"

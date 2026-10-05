@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=75,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dota2proleague"
+version = "0.1.0"
+description = "Professional Dota 2 scouting pipeline with OpenDota, Airflow and dbt"
+requires-python = ">=3.12"
+dependencies = ["psycopg[binary]>=3.2,<4"]
+
+[project.scripts]
+dota-scout = "dota_scout.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

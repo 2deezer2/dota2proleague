@@ -1,0 +1,17 @@
+version: 2
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: pro_matches
+        columns:
+          - name: match_id
+            tests: [unique, not_null]
+      - name: match_payloads
+        columns:
+          - name: match_id
+            tests: [unique, not_null]
+      - name: heroes
+        columns:
+          - name: hero_id
+            tests: [unique, not_null]

@@ -1,0 +1,273 @@
+{
+  "synthetic": true,
+  "heroes": [
+    {
+      "id": 1,
+      "localized_name": "Anti-Mage"
+    },
+    {
+      "id": 2,
+      "localized_name": "Axe"
+    },
+    {
+      "id": 3,
+      "localized_name": "Bane"
+    },
+    {
+      "id": 4,
+      "localized_name": "Bloodseeker"
+    },
+    {
+      "id": 5,
+      "localized_name": "Crystal Maiden"
+    },
+    {
+      "id": 6,
+      "localized_name": "Drow Ranger"
+    },
+    {
+      "id": 7,
+      "localized_name": "Earthshaker"
+    },
+    {
+      "id": 8,
+      "localized_name": "Juggernaut"
+    },
+    {
+      "id": 9,
+      "localized_name": "Mirana"
+    },
+    {
+      "id": 10,
+      "localized_name": "Morphling"
+    },
+    {
+      "id": 11,
+      "localized_name": "Shadow Fiend"
+    },
+    {
+      "id": 12,
+      "localized_name": "Phantom Lancer"
+    },
+    {
+      "id": 13,
+      "localized_name": "Puck"
+    },
+    {
+      "id": 14,
+      "localized_name": "Pudge"
+    }
+  ],
+  "matches": [
+    {
+      "match_id": 900000000001,
+      "start_time": 1790856000,
+      "duration": 2400,
+      "radiant_win": true,
+      "leagueid": 999999,
+      "league_name": "Demo League (synthetic)",
+      "patch": null,
+      "radiant_team_id": 990001,
+      "dire_team_id": 990002,
+      "radiant_name": "Demo Radiant",
+      "dire_name": "Demo Dire",
+      "radiant_team": {
+        "name": "Demo Radiant"
+      },
+      "dire_team": {
+        "name": "Demo Dire"
+      },
+      "picks_bans": [
+        {
+          "order": 0,
+          "hero_id": 11,
+          "team": 0,
+          "is_pick": false
+        },
+        {
+          "order": 1,
+          "hero_id": 12,
+          "team": 1,
+          "is_pick": false
+        },
+        {
+          "order": 2,
+          "hero_id": 13,
+          "team": 0,
+          "is_pick": false
+        },
+        {
+          "order": 3,
+          "hero_id": 14,
+          "team": 1,
+          "is_pick": false
+        },
+        {
+          "order": 4,
+          "hero_id": 2,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 5,
+          "hero_id": 1,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 6,
+          "hero_id": 3,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 7,
+          "hero_id": 4,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 8,
+          "hero_id": 5,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 9,
+          "hero_id": 6,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 10,
+          "hero_id": 7,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 11,
+          "hero_id": 8,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 12,
+          "hero_id": 9,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 13,
+          "hero_id": 10,
+          "team": 1,
+          "is_pick": true
+        }
+      ]
+    },
+    {
+      "match_id": 900000000002,
+      "start_time": 1790942400,
+      "duration": 2700,
+      "radiant_win": false,
+      "leagueid": 999999,
+      "league_name": "Demo League (synthetic)",
+      "patch": null,
+      "radiant_team_id": 990001,
+      "dire_team_id": 990002,
+      "radiant_name": "Demo Radiant",
+      "dire_name": "Demo Dire",
+      "radiant_team": {
+        "name": "Demo Radiant"
+      },
+      "dire_team": {
+        "name": "Demo Dire"
+      },
+      "picks_bans": [
+        {
+          "order": 0,
+          "hero_id": 11,
+          "team": 0,
+          "is_pick": false
+        },
+        {
+          "order": 1,
+          "hero_id": 12,
+          "team": 1,
+          "is_pick": false
+        },
+        {
+          "order": 2,
+          "hero_id": 13,
+          "team": 0,
+          "is_pick": false
+        },
+        {
+          "order": 3,
+          "hero_id": 14,
+          "team": 1,
+          "is_pick": false
+        },
+        {
+          "order": 4,
+          "hero_id": 2,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 5,
+          "hero_id": 1,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 6,
+          "hero_id": 3,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 7,
+          "hero_id": 4,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 8,
+          "hero_id": 5,
+          "team": 0,
+          "is_pick": true
+        },
+        {
+          "order": 9,
+          "hero_id": 6,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 10,
+          "hero_id": 7,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 11,
+          "hero_id": 8,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 12,
+          "hero_id": 9,
+          "team": 1,
+          "is_pick": true
+        },
+        {
+          "order": 13,
+          "hero_id": 10,
+          "team": 1,
+          "is_pick": true
+        }
+      ]
+    }
+  ]
+}
