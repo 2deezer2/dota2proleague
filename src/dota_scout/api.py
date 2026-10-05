@@ -12,13 +12,23 @@ from urllib.request import Request, urlopen
 
 
 class OpenDotaClient:
-    def __init__(self, *, interval=1.1, attempts=5, opener=urlopen, sleep=time.sleep):
+    def __init__(self, *, interval=1.1, attempts=5, opener=urlopen, sleep=time.sleep,
+                 budget_seconds=None):
         if interval < 0 or attempts < 1:
             raise ValueError("interval >= 0 and attempts >= 1 are required")
         self.interval = interval
         self.attempts = attempts
         self.opener = opener
         self.sleep = sleep
+        if budget_seconds is not None and budget_seconds <= 0:
+            raise ValueError("budget_seconds must be positive")
+        self.deadline = None if budget_seconds is None else time.monotonic()+budget_seconds
+
+    def remaining(self):
+        remaining = float("inf") if self.deadline is None else self.deadline-time.monotonic()
+        if remaining <= 0:
+            raise RuntimeError("OpenDota collection time budget exhausted")
+        return remaining
 
     def get(self, endpoint, **params):
         if not endpoint.startswith("/") or ".." in endpoint:
@@ -31,9 +41,9 @@ class OpenDotaClient:
             url += "?" + urlencode(params)
         request = Request(url, headers={"User-Agent": "dota2proleague/0.1"})
         for attempt in range(self.attempts):
-            self.sleep(self.interval)
+            self.sleep(min(self.interval,self.remaining()))
             try:
-                with self.opener(request, timeout=30) as response:
+                with self.opener(request, timeout=min(30,self.remaining())) as response:
                     return json.load(response)
             except HTTPError as exc:
                 if exc.code != 429 and not 500 <= exc.code < 600:
@@ -44,7 +54,7 @@ class OpenDotaClient:
             except (URLError, TimeoutError, ConnectionError):
                 delay = retry_delay(None, attempt)
             if attempt + 1 < self.attempts:
-                self.sleep(delay)
+                self.sleep(min(delay,self.remaining()))
         raise RuntimeError(f"OpenDota {endpoint}: retries exhausted") from None
 
 

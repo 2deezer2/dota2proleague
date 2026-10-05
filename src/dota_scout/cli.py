@@ -20,6 +20,7 @@ def main():
     sample.add_argument("--pages",type=int,default=10)
     sample.add_argument("--limit",type=int,default=60)
     sample.add_argument("--profile-limit",type=int,default=10)
+    sample.add_argument("--max-seconds",type=int,default=300)
     sample.add_argument("--output",default="data/analysis.json")
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -34,7 +35,8 @@ def main():
         return
     if args.command == "snapshot":
         from dota_scout.snapshot import snapshot
-        print(snapshot(args.output,pages=args.pages,limit=args.limit,profile_limit=args.profile_limit))
+        print(snapshot(args.output,pages=args.pages,limit=args.limit,profile_limit=args.profile_limit,
+                       max_seconds=args.max_seconds))
         return
     from dota_scout.warehouse import connect, init_schema, load_demo, sync, sync_profiles
     if args.command == "sync":

@@ -76,6 +76,13 @@ class APIClientTests(unittest.TestCase):
     def test_retry_after_is_capped(self):
         self.assertEqual(retry_delay("999999", 0), 120)
 
+    def test_global_collection_budget_stops_before_request(self):
+        with patch('dota_scout.api.time.monotonic',side_effect=[0,10]):
+            client=OpenDotaClient(budget_seconds=5,sleep=lambda _:None,
+                                 opener=lambda *_args,**_kwargs:self.fail('Request must not run'))
+            with self.assertRaisesRegex(RuntimeError,'time budget'):
+                client.get('/heroes')
+
     def test_demo_fixtures_are_valid(self):
         from pathlib import Path
         fixture = json.loads((Path(__file__).parent / "fixtures/demo.json").read_text())
