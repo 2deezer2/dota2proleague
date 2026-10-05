@@ -38,4 +38,12 @@ jobs:
       - name: Build Airflow image and check DAG imports
         run: |
           docker compose build airflow
-          docker compose run --rm --no-deps airflow python -c "from airflow.models.dagbag import DagBag; bag=DagBag('/opt/project/dags', include_examples=False); assert not bag.import_errors, bag.import_errors; assert 'dota2_pro_league' in bag.dags"
+          docker compose run --rm --no-deps airflow python -c "from airflow.dag_processing.dagbag import DagBag; bag=DagBag('/opt/project/dags', safe_mode=False); assert not bag.import_errors, bag.import_errors; assert 'dota2_pro_league' in bag.dags"
+      - name: Start stack and verify demo dashboard
+        run: |
+          docker compose up -d --build
+          docker compose exec -T airflow python -m dota_scout.cli demo
+          docker compose exec -T airflow /opt/dbt/bin/dbt build --project-dir /opt/project/dbt --profiles-dir /opt/project/dbt
+          curl --retry 30 --retry-delay 2 --retry-all-errors --fail --silent http://127.0.0.1:8080/api/v2/monitor/health > /dev/null
+          curl --retry 30 --retry-delay 2 --retry-all-errors --fail --silent http://127.0.0.1:8501/_stcore/health > /dev/null
+          docker compose exec -T dashboard python -c "from streamlit.testing.v1 import AppTest; app=AppTest.from_file('/app/app.py').run(timeout=30); assert not app.exception, app.exception; assert app.metric[0].value=='2'; assert app.metric[1].value=='50.0%'"
